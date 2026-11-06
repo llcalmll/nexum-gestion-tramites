@@ -1,0 +1,2331 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "ec16107c-6d8d-436f-9a5b-c20c55eea0ef",
+  "prevId": "8400b5d4-d0f3-4f85-a31e-2fba159d7401",
+  "tables": {
+    "avaluos": {
+      "name": "avaluos",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "anio_fiscal": {
+          "name": "anio_fiscal",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "clase": {
+          "name": "clase",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "marca": {
+          "name": "marca",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "linea": {
+          "name": "linea",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cilindraje": {
+          "name": "cilindraje",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "valores_miles": {
+          "name": "valores_miles",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "busqueda": {
+          "name": "busqueda",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        }
+      },
+      "indexes": {
+        "avaluos_busqueda_idx": {
+          "name": "avaluos_busqueda_idx",
+          "columns": [
+            "anio_fiscal",
+            "marca",
+            "linea"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "bitacora": {
+      "name": "bitacora",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tramite_id": {
+          "name": "tramite_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tipo_evento": {
+          "name": "tipo_evento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "descripcion": {
+          "name": "descripcion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "estado_anterior": {
+          "name": "estado_anterior",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "estado_nuevo": {
+          "name": "estado_nuevo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "origen": {
+          "name": "origen",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'manual'"
+        },
+        "referencia": {
+          "name": "referencia",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "bitacora_tramite_idx": {
+          "name": "bitacora_tramite_idx",
+          "columns": [
+            "tramite_id",
+            "fecha"
+          ],
+          "isUnique": false
+        },
+        "bitacora_version_idx": {
+          "name": "bitacora_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "bitacora_tramite_id_tramites_id_fk": {
+          "name": "bitacora_tramite_id_tramites_id_fk",
+          "tableFrom": "bitacora",
+          "tableTo": "tramites",
+          "columnsFrom": [
+            "tramite_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "bitacora_tipo_chk": {
+          "name": "bitacora_tipo_chk",
+          "value": "\"bitacora\".\"tipo_evento\" IN ('creacion', 'cambio_estado', 'nota', 'datos', 'costos', 'documento', 'pago', 'precondicion', 'persona')"
+        },
+        "bitacora_origen_chk": {
+          "name": "bitacora_origen_chk",
+          "value": "\"bitacora\".\"origen\" IN ('manual', 'sistema', 'asistente', 'whatsapp')"
+        }
+      }
+    },
+    "clientes": {
+      "name": "clientes",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tipo_documento": {
+          "name": "tipo_documento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'CC'"
+        },
+        "numero_documento": {
+          "name": "numero_documento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "telefono": {
+          "name": "telefono",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ciudad": {
+          "name": "ciudad",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fecha_nacimiento": {
+          "name": "fecha_nacimiento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fecha_expedicion_documento": {
+          "name": "fecha_expedicion_documento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "notas": {
+          "name": "notas",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "busqueda": {
+          "name": "busqueda",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "clientes_documento_unq": {
+          "name": "clientes_documento_unq",
+          "columns": [
+            "numero_documento"
+          ],
+          "isUnique": true
+        },
+        "clientes_telefono_idx": {
+          "name": "clientes_telefono_idx",
+          "columns": [
+            "telefono"
+          ],
+          "isUnique": false
+        },
+        "clientes_version_idx": {
+          "name": "clientes_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "clientes_tipo_documento_chk": {
+          "name": "clientes_tipo_documento_chk",
+          "value": "\"clientes\".\"tipo_documento\" IN ('CC', 'TI', 'CE', 'Pasaporte', 'PPT', 'NIT')"
+        }
+      }
+    },
+    "contador": {
+      "name": "contador",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "documentos": {
+      "name": "documentos",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tramite_id": {
+          "name": "tramite_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tipo_documento": {
+          "name": "tipo_documento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "estado": {
+          "name": "estado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'pendiente'"
+        },
+        "archivo_clave": {
+          "name": "archivo_clave",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "archivo_nombre": {
+          "name": "archivo_nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "archivo_tipo": {
+          "name": "archivo_tipo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "archivo_bytes": {
+          "name": "archivo_bytes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "origen": {
+          "name": "origen",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'manual'"
+        },
+        "notas": {
+          "name": "notas",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "documentos_tramite_idx": {
+          "name": "documentos_tramite_idx",
+          "columns": [
+            "tramite_id"
+          ],
+          "isUnique": false
+        },
+        "documentos_version_idx": {
+          "name": "documentos_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "documentos_tramite_id_tramites_id_fk": {
+          "name": "documentos_tramite_id_tramites_id_fk",
+          "tableFrom": "documentos",
+          "tableTo": "tramites",
+          "columnsFrom": [
+            "tramite_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "documentos_estado_chk": {
+          "name": "documentos_estado_chk",
+          "value": "\"documentos\".\"estado\" IN ('pendiente', 'recibido', 'validado', 'rechazado')"
+        },
+        "documentos_origen_chk": {
+          "name": "documentos_origen_chk",
+          "value": "\"documentos\".\"origen\" IN ('manual', 'sistema', 'asistente', 'whatsapp')"
+        }
+      }
+    },
+    "eliminados": {
+      "name": "eliminados",
+      "columns": {
+        "tabla": {
+          "name": "tabla",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "registro_id": {
+          "name": "registro_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "eliminados_version_idx": {
+          "name": "eliminados_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "licencias": {
+      "name": "licencias",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cliente_id": {
+          "name": "cliente_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "categoria": {
+          "name": "categoria",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fecha_expedicion": {
+          "name": "fecha_expedicion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fecha_vencimiento": {
+          "name": "fecha_vencimiento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "origen": {
+          "name": "origen",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'manual'"
+        },
+        "tramite_id": {
+          "name": "tramite_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "gestion_estado": {
+          "name": "gestion_estado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'sin_gestion'"
+        },
+        "gestion_nota": {
+          "name": "gestion_nota",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "gestion_fecha": {
+          "name": "gestion_fecha",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "licencias_cliente_categoria_unq": {
+          "name": "licencias_cliente_categoria_unq",
+          "columns": [
+            "cliente_id",
+            "categoria"
+          ],
+          "isUnique": true
+        },
+        "licencias_vencimiento_idx": {
+          "name": "licencias_vencimiento_idx",
+          "columns": [
+            "fecha_vencimiento"
+          ],
+          "isUnique": false
+        },
+        "licencias_version_idx": {
+          "name": "licencias_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "licencias_cliente_id_clientes_id_fk": {
+          "name": "licencias_cliente_id_clientes_id_fk",
+          "tableFrom": "licencias",
+          "tableTo": "clientes",
+          "columnsFrom": [
+            "cliente_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "licencias_tramite_id_tramites_id_fk": {
+          "name": "licencias_tramite_id_tramites_id_fk",
+          "tableFrom": "licencias",
+          "tableTo": "tramites",
+          "columnsFrom": [
+            "tramite_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "licencias_categoria_chk": {
+          "name": "licencias_categoria_chk",
+          "value": "\"licencias\".\"categoria\" IN ('A1', 'A2', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3')"
+        },
+        "licencias_origen_chk": {
+          "name": "licencias_origen_chk",
+          "value": "\"licencias\".\"origen\" IN ('manual', 'tramite', 'importada', 'foto', 'consulta')"
+        },
+        "licencias_gestion_chk": {
+          "name": "licencias_gestion_chk",
+          "value": "\"licencias\".\"gestion_estado\" IN ('sin_gestion', 'por_llamar', 'contactado', 'agendado', 'renovado', 'descartado')"
+        }
+      }
+    },
+    "organismos": {
+      "name": "organismos",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ciudad": {
+          "name": "ciudad",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "departamento": {
+          "name": "departamento",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "notas": {
+          "name": "notas",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "activo": {
+          "name": "activo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "organismos_version_idx": {
+          "name": "organismos_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "organismos_activo_chk": {
+          "name": "organismos_activo_chk",
+          "value": "\"organismos\".\"activo\" IN (0, 1)"
+        }
+      }
+    },
+    "pagos": {
+      "name": "pagos",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tramite_id": {
+          "name": "tramite_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "concepto": {
+          "name": "concepto",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "valor": {
+          "name": "valor",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "metodo": {
+          "name": "metodo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "comprobante_clave": {
+          "name": "comprobante_clave",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "pagos_tramite_idx": {
+          "name": "pagos_tramite_idx",
+          "columns": [
+            "tramite_id"
+          ],
+          "isUnique": false
+        },
+        "pagos_version_idx": {
+          "name": "pagos_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "pagos_tramite_id_tramites_id_fk": {
+          "name": "pagos_tramite_id_tramites_id_fk",
+          "tableFrom": "pagos",
+          "tableTo": "tramites",
+          "columnsFrom": [
+            "tramite_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "pagos_concepto_chk": {
+          "name": "pagos_concepto_chk",
+          "value": "\"pagos\".\"concepto\" IN ('derechos', 'honorarios', 'abono', 'otros')"
+        }
+      }
+    },
+    "parametros": {
+      "name": "parametros",
+      "columns": {
+        "clave": {
+          "name": "clave",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "valor": {
+          "name": "valor",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "descripcion": {
+          "name": "descripcion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "parametros_version_idx": {
+          "name": "parametros_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "recordatorios": {
+      "name": "recordatorios",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'recordatorio'"
+        },
+        "titulo": {
+          "name": "titulo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fecha": {
+          "name": "fecha",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hora": {
+          "name": "hora",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "estado": {
+          "name": "estado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'pendiente'"
+        },
+        "cliente_id": {
+          "name": "cliente_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "tramite_id": {
+          "name": "tramite_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "origen": {
+          "name": "origen",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'manual'"
+        },
+        "notas": {
+          "name": "notas",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "recordatorios_fecha_idx": {
+          "name": "recordatorios_fecha_idx",
+          "columns": [
+            "estado",
+            "fecha"
+          ],
+          "isUnique": false
+        },
+        "recordatorios_version_idx": {
+          "name": "recordatorios_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "recordatorios_cliente_id_clientes_id_fk": {
+          "name": "recordatorios_cliente_id_clientes_id_fk",
+          "tableFrom": "recordatorios",
+          "tableTo": "clientes",
+          "columnsFrom": [
+            "cliente_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "recordatorios_tramite_id_tramites_id_fk": {
+          "name": "recordatorios_tramite_id_tramites_id_fk",
+          "tableFrom": "recordatorios",
+          "tableTo": "tramites",
+          "columnsFrom": [
+            "tramite_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "recordatorios_tipo_chk": {
+          "name": "recordatorios_tipo_chk",
+          "value": "\"recordatorios\".\"tipo\" IN ('recordatorio', 'cita', 'llamada')"
+        },
+        "recordatorios_estado_chk": {
+          "name": "recordatorios_estado_chk",
+          "value": "\"recordatorios\".\"estado\" IN ('pendiente', 'hecho', 'cancelado')"
+        },
+        "recordatorios_origen_chk": {
+          "name": "recordatorios_origen_chk",
+          "value": "\"recordatorios\".\"origen\" IN ('manual', 'sistema', 'asistente', 'whatsapp')"
+        }
+      }
+    },
+    "tarifas": {
+      "name": "tarifas",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tipo_tramite_id": {
+          "name": "tipo_tramite_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "organismo_id": {
+          "name": "organismo_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "derechos_transito": {
+          "name": "derechos_transito",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "componente_runt": {
+          "name": "componente_runt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "estampillas": {
+          "name": "estampillas",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "paz_salvo": {
+          "name": "paz_salvo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "honorarios": {
+          "name": "honorarios",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "vigente_desde": {
+          "name": "vigente_desde",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "tarifas_tipo_organismo_unq": {
+          "name": "tarifas_tipo_organismo_unq",
+          "columns": [
+            "tipo_tramite_id",
+            "organismo_id"
+          ],
+          "isUnique": true
+        },
+        "tarifas_version_idx": {
+          "name": "tarifas_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "tarifas_tipo_tramite_id_tipos_tramite_id_fk": {
+          "name": "tarifas_tipo_tramite_id_tipos_tramite_id_fk",
+          "tableFrom": "tarifas",
+          "tableTo": "tipos_tramite",
+          "columnsFrom": [
+            "tipo_tramite_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "tarifas_organismo_id_organismos_id_fk": {
+          "name": "tarifas_organismo_id_organismos_id_fk",
+          "tableFrom": "tarifas",
+          "tableTo": "organismos",
+          "columnsFrom": [
+            "organismo_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "tipos_tramite": {
+      "name": "tipos_tramite",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "categoria": {
+          "name": "categoria",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "descripcion": {
+          "name": "descripcion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "requiere_vehiculo": {
+          "name": "requiere_vehiculo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "aplica_impuesto_registro": {
+          "name": "aplica_impuesto_registro",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "sla_dias": {
+          "name": "sla_dias",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "requisitos": {
+          "name": "requisitos",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'[]'"
+        },
+        "precondiciones": {
+          "name": "precondiciones",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'{}'"
+        },
+        "orden": {
+          "name": "orden",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "activo": {
+          "name": "activo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "tipos_tramite_nombre_unq": {
+          "name": "tipos_tramite_nombre_unq",
+          "columns": [
+            "nombre"
+          ],
+          "isUnique": true
+        },
+        "tipos_tramite_version_idx": {
+          "name": "tipos_tramite_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "tipos_tramite_categoria_chk": {
+          "name": "tipos_tramite_categoria_chk",
+          "value": "\"tipos_tramite\".\"categoria\" IN ('vehiculo', 'licencia', 'seguros_multas')"
+        },
+        "tipos_tramite_vehiculo_chk": {
+          "name": "tipos_tramite_vehiculo_chk",
+          "value": "\"tipos_tramite\".\"requiere_vehiculo\" IN (0, 1)"
+        },
+        "tipos_tramite_registro_chk": {
+          "name": "tipos_tramite_registro_chk",
+          "value": "\"tipos_tramite\".\"aplica_impuesto_registro\" IN (0, 1)"
+        },
+        "tipos_tramite_activo_chk": {
+          "name": "tipos_tramite_activo_chk",
+          "value": "\"tipos_tramite\".\"activo\" IN (0, 1)"
+        }
+      }
+    },
+    "tramite_personas": {
+      "name": "tramite_personas",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tramite_id": {
+          "name": "tramite_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cliente_id": {
+          "name": "cliente_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "rol": {
+          "name": "rol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'interviniente'"
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "tramite_personas_unq": {
+          "name": "tramite_personas_unq",
+          "columns": [
+            "tramite_id",
+            "cliente_id",
+            "rol"
+          ],
+          "isUnique": true
+        },
+        "tramite_personas_version_idx": {
+          "name": "tramite_personas_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "tramite_personas_tramite_id_tramites_id_fk": {
+          "name": "tramite_personas_tramite_id_tramites_id_fk",
+          "tableFrom": "tramite_personas",
+          "tableTo": "tramites",
+          "columnsFrom": [
+            "tramite_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "tramite_personas_cliente_id_clientes_id_fk": {
+          "name": "tramite_personas_cliente_id_clientes_id_fk",
+          "tableFrom": "tramite_personas",
+          "tableTo": "clientes",
+          "columnsFrom": [
+            "cliente_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "tramite_personas_rol_chk": {
+          "name": "tramite_personas_rol_chk",
+          "value": "\"tramite_personas\".\"rol\" IN ('titular', 'copropietario', 'comprador', 'vendedor', 'apoderado', 'interviniente')"
+        }
+      }
+    },
+    "tramites": {
+      "name": "tramites",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "numero": {
+          "name": "numero",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tipo_id": {
+          "name": "tipo_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "titular_id": {
+          "name": "titular_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "vehiculo_id": {
+          "name": "vehiculo_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "organismo_id": {
+          "name": "organismo_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "encargo_id": {
+          "name": "encargo_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "estado": {
+          "name": "estado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'en_preparacion'"
+        },
+        "borrador": {
+          "name": "borrador",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "detalle": {
+          "name": "detalle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fecha_radicado": {
+          "name": "fecha_radicado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fecha_estimada_entrega": {
+          "name": "fecha_estimada_entrega",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fecha_entrega": {
+          "name": "fecha_entrega",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "precondiciones_estado": {
+          "name": "precondiciones_estado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'{}'"
+        },
+        "costo_derechos": {
+          "name": "costo_derechos",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "honorarios": {
+          "name": "honorarios",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "otros_costos": {
+          "name": "otros_costos",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "total": {
+          "name": "total",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "estado_pago": {
+          "name": "estado_pago",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'pendiente'"
+        },
+        "estado_tarjeta": {
+          "name": "estado_tarjeta",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "aliado": {
+          "name": "aliado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "observaciones": {
+          "name": "observaciones",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "tramites_numero_unq": {
+          "name": "tramites_numero_unq",
+          "columns": [
+            "numero"
+          ],
+          "isUnique": true
+        },
+        "tramites_estado_idx": {
+          "name": "tramites_estado_idx",
+          "columns": [
+            "estado"
+          ],
+          "isUnique": false
+        },
+        "tramites_titular_idx": {
+          "name": "tramites_titular_idx",
+          "columns": [
+            "titular_id"
+          ],
+          "isUnique": false
+        },
+        "tramites_vehiculo_idx": {
+          "name": "tramites_vehiculo_idx",
+          "columns": [
+            "vehiculo_id"
+          ],
+          "isUnique": false
+        },
+        "tramites_encargo_idx": {
+          "name": "tramites_encargo_idx",
+          "columns": [
+            "encargo_id"
+          ],
+          "isUnique": false
+        },
+        "tramites_version_idx": {
+          "name": "tramites_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "tramites_tipo_id_tipos_tramite_id_fk": {
+          "name": "tramites_tipo_id_tipos_tramite_id_fk",
+          "tableFrom": "tramites",
+          "tableTo": "tipos_tramite",
+          "columnsFrom": [
+            "tipo_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "tramites_titular_id_clientes_id_fk": {
+          "name": "tramites_titular_id_clientes_id_fk",
+          "tableFrom": "tramites",
+          "tableTo": "clientes",
+          "columnsFrom": [
+            "titular_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "tramites_vehiculo_id_vehiculos_id_fk": {
+          "name": "tramites_vehiculo_id_vehiculos_id_fk",
+          "tableFrom": "tramites",
+          "tableTo": "vehiculos",
+          "columnsFrom": [
+            "vehiculo_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "tramites_organismo_id_organismos_id_fk": {
+          "name": "tramites_organismo_id_organismos_id_fk",
+          "tableFrom": "tramites",
+          "tableTo": "organismos",
+          "columnsFrom": [
+            "organismo_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "tramites_estado_chk": {
+          "name": "tramites_estado_chk",
+          "value": "\"tramites\".\"estado\" IN ('en_preparacion', 'en_tramite', 'requiere_correccion', 'listo_para_entrega', 'entregado', 'cancelado')"
+        },
+        "tramites_estado_pago_chk": {
+          "name": "tramites_estado_pago_chk",
+          "value": "\"tramites\".\"estado_pago\" IN ('pendiente', 'abonado', 'pagado')"
+        },
+        "tramites_estado_tarjeta_chk": {
+          "name": "tramites_estado_tarjeta_chk",
+          "value": "\"tramites\".\"estado_tarjeta\" IS NULL OR \"tramites\".\"estado_tarjeta\" IN ('no_recibida', 'en_oficina', 'enviada', 'entregada', 'rechazada')"
+        },
+        "tramites_borrador_chk": {
+          "name": "tramites_borrador_chk",
+          "value": "\"tramites\".\"borrador\" IN (0, 1)"
+        }
+      }
+    },
+    "uso_ia": {
+      "name": "uso_ia",
+      "columns": {
+        "fecha": {
+          "name": "fecha",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "funcion": {
+          "name": "funcion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "modelo": {
+          "name": "modelo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "llamadas": {
+          "name": "llamadas",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "tokens_entrada": {
+          "name": "tokens_entrada",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "tokens_salida": {
+          "name": "tokens_salida",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "uso_ia_fecha_funcion_modelo_pk": {
+          "columns": [
+            "fecha",
+            "funcion",
+            "modelo"
+          ],
+          "name": "uso_ia_fecha_funcion_modelo_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "vehiculo_personas": {
+      "name": "vehiculo_personas",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "vehiculo_id": {
+          "name": "vehiculo_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "cliente_id": {
+          "name": "cliente_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "rol": {
+          "name": "rol",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'copropietario'"
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "vehiculo_personas_unq": {
+          "name": "vehiculo_personas_unq",
+          "columns": [
+            "vehiculo_id",
+            "cliente_id"
+          ],
+          "isUnique": true
+        },
+        "vehiculo_personas_version_idx": {
+          "name": "vehiculo_personas_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "vehiculo_personas_vehiculo_id_vehiculos_id_fk": {
+          "name": "vehiculo_personas_vehiculo_id_vehiculos_id_fk",
+          "tableFrom": "vehiculo_personas",
+          "tableTo": "vehiculos",
+          "columnsFrom": [
+            "vehiculo_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "vehiculo_personas_cliente_id_clientes_id_fk": {
+          "name": "vehiculo_personas_cliente_id_clientes_id_fk",
+          "tableFrom": "vehiculo_personas",
+          "tableTo": "clientes",
+          "columnsFrom": [
+            "cliente_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "vehiculo_personas_rol_chk": {
+          "name": "vehiculo_personas_rol_chk",
+          "value": "\"vehiculo_personas\".\"rol\" IN ('titular', 'copropietario', 'comprador', 'vendedor', 'apoderado', 'interviniente')"
+        }
+      }
+    },
+    "vehiculos": {
+      "name": "vehiculos",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "placa": {
+          "name": "placa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "titular_id": {
+          "name": "titular_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "clase": {
+          "name": "clase",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "marca": {
+          "name": "marca",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "linea": {
+          "name": "linea",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "modelo": {
+          "name": "modelo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cilindraje": {
+          "name": "cilindraje",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "servicio": {
+          "name": "servicio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "color": {
+          "name": "color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "numero_motor": {
+          "name": "numero_motor",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "numero_chasis": {
+          "name": "numero_chasis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "numero_serie": {
+          "name": "numero_serie",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "vin": {
+          "name": "vin",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "fecha_matricula": {
+          "name": "fecha_matricula",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "organismo_matricula_id": {
+          "name": "organismo_matricula_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "soat_vence": {
+          "name": "soat_vence",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "rtm_vence": {
+          "name": "rtm_vence",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "impuesto_al_dia_hasta": {
+          "name": "impuesto_al_dia_hasta",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "gravamenes": {
+          "name": "gravamenes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'[]'"
+        },
+        "avaluo_oficial": {
+          "name": "avaluo_oficial",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "avaluo_detalle": {
+          "name": "avaluo_detalle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "notas": {
+          "name": "notas",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "busqueda": {
+          "name": "busqueda",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
+        },
+        "creado": {
+          "name": "creado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "actualizado": {
+          "name": "actualizado",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "vehiculos_placa_unq": {
+          "name": "vehiculos_placa_unq",
+          "columns": [
+            "placa"
+          ],
+          "isUnique": true
+        },
+        "vehiculos_titular_idx": {
+          "name": "vehiculos_titular_idx",
+          "columns": [
+            "titular_id"
+          ],
+          "isUnique": false
+        },
+        "vehiculos_version_idx": {
+          "name": "vehiculos_version_idx",
+          "columns": [
+            "version"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "vehiculos_titular_id_clientes_id_fk": {
+          "name": "vehiculos_titular_id_clientes_id_fk",
+          "tableFrom": "vehiculos",
+          "tableTo": "clientes",
+          "columnsFrom": [
+            "titular_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "vehiculos_organismo_matricula_id_organismos_id_fk": {
+          "name": "vehiculos_organismo_matricula_id_organismos_id_fk",
+          "tableFrom": "vehiculos",
+          "tableTo": "organismos",
+          "columnsFrom": [
+            "organismo_matricula_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "vehiculos_servicio_chk": {
+          "name": "vehiculos_servicio_chk",
+          "value": "\"vehiculos\".\"servicio\" IS NULL OR \"vehiculos\".\"servicio\" IN ('particular', 'publico', 'oficial', 'diplomatico')"
+        }
+      }
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

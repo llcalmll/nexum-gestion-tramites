@@ -1,0 +1,7 @@
+# Copiar a .dev.vars (no se sube a git). Solo para `npm run dev` en este PC.
+# Sin Cloudflare Access en local: el Worker acepta como usuario a CORREO_PERMITIDO,
+# pero SOLO si la petición llega a localhost.
+ACCESO_LOCAL=1
+
+# Clave de OpenAI (en producción va como secreto: node scripts/subir-secreto.mjs OPENAI_API_KEY)
+OPENAI_API_KEY=

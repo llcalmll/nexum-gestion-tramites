@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.wrangler/
+.wrangler-cuenta/
+.dev.vars
+.env*
+SECRETOS-NO-SUBIR.txt
+*.sql.respaldo
+respaldos/
+datos-reales/
+capturas-prueba/
+.token-cloudflare
+.wrangler/prueba*/
+.token-airtable
+__pycache__/
+
+# Credencial de servicio de Access para wrangler (scripts/credencial-wrangler.mjs)
+.access-servicio.json
